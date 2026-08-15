@@ -204,8 +204,9 @@ class AppController:
     def _advance_from_win(self) -> None:
         """从胜利界面进入下一关或完成。"""
         if self.game.next_level():
-            self.win_overlay.timer = -1  # 重置计时器
-            self.state = AppState.PLAYING  # ← 必须切换回 PLAYING，否则卡死在 WIN 渲染模式
+            self.win_overlay.timer = -1
+            self.win_overlay._shown = False  # ← 重置标记，允许下一关再次显示胜利覆盖层
+            self.state = AppState.PLAYING
         else:
             self.state = AppState.COMPLETE
 
@@ -260,8 +261,8 @@ class AppController:
         )
         self.hud.draw(screen)
 
-        # 检测胜利
-        if self.game.won and self.win_overlay.timer == 0:
+        # 检测胜利（用 _shown 标记判断，不再依赖 timer==0）
+        if self.game.won and not self.win_overlay._shown:
             self.win_overlay.show(moves=self.game.state.moves, pushes=self.game.state.pushes)
             self.state = AppState.WIN
 

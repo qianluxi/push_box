@@ -169,6 +169,8 @@ class WinOverlay:
         self.screen_height = screen_height
         self.show_text = ""
         self.timer: int = 0
+        # ← 标记本局是否已触发过显示（替代原来的 timer==0 判断）
+        self._shown: bool = False
         self.big_font = _sys_font(48, bold=True)
         self.small_font = _sys_font(24)
 
@@ -176,6 +178,7 @@ class WinOverlay:
         """显示胜利信息。"""
         self.show_text = f"LEVEL COMPLETE!\nMoves: {moves}  Pushes: {pushes}"
         self.timer = 0
+        self._shown = True
 
     def draw(self, screen) -> None:
         """绘制半透明覆盖层和胜利文字 + 下一步提示。"""
@@ -197,7 +200,8 @@ class WinOverlay:
         y_start = self.screen_height // 2 - 40
 
         for i, line in enumerate(text_lines):
-            surf = self.big_font.render(line, True, (255, 220, 100)) if i == 0 else                    self.small_font.render(line, True, (200, 200, 200))
+            surf = self.big_font.render(line, True, (255, 220, 100)) if i == 0 else \
+                self.small_font.render(line, True, (200, 200, 200))
             rect = surf.get_rect(centerx=center_x, y=y_start + i * 40)
             screen.blit(surf, rect)
 
