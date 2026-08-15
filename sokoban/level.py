@@ -36,6 +36,35 @@ PLAYER_CHARS = ('@',)
 COMBINED_CHARS = {'*': 'box_on_goal', '+': 'player_on_goal'}
 
 
+def _check_rectangular(level_name: str, raw_lines: list[str]) -> None:
+    """检查关卡文件是否为矩形、无内部空行。
+
+    Raises:
+        ValueError: 存在内部空行或行宽不一致
+    """
+    non_empty = [l for l in raw_lines if l.strip()]
+    if not non_empty:
+        raise ValueError(f"Level {level_name} is empty")
+
+    widths = {len(l.rstrip('\r\n')) for l in non_empty}
+    if len(widths) > 1:
+        raise ValueError(
+            f"Level {level_name} is not rectangular: row widths {sorted(widths)}. "
+            f"All rows must have the same number of columns."
+        )
+
+    # 内部空行（非末尾）会破坏行坐标，直接拒绝
+    seen_content = False
+    for i, l in enumerate(raw_lines):
+        if l.strip():
+            seen_content = True
+        elif seen_content:
+            raise ValueError(
+                f"Level {level_name} has a blank line at row {i}. "
+                f"Blank lines inside a level are not allowed."
+            )
+
+
 def load_level(level_name: str) -> tuple[Board, GameState]:
     """从关卡文件加载一个局面。
 
@@ -53,6 +82,14 @@ def load_level(level_name: str) -> tuple[Board, GameState]:
     path = get_level_path(level_name)
     raw_text = path.read_text(encoding='utf-8')
 
+    # 规范化行：去除 \r，丢弃末尾空行（文件结尾换行常见，不算错误）
+    raw_lines = [l.rstrip('\r') for l in raw_text.splitlines()]
+    while raw_lines and not raw_lines[-1].strip():
+        raw_lines.pop()
+
+    # ← 检查矩形性 + 空行（先于解析，避免坐标错乱）
+    _check_rectangular(level_name, raw_lines)
+
     walls: set[tuple[int, int]] = set()
     goals: set[tuple[int, int]] = set()
     player_pos: Position | None = None
@@ -61,11 +98,8 @@ def load_level(level_name: str) -> tuple[Board, GameState]:
     row_max = -1
     col_max = -1
 
-    for row_idx, line in enumerate(raw_text.splitlines()):
+    for row_idx, line in enumerate(raw_lines):
         stripped = line.rstrip('\r\n')
-        if not stripped.strip():  # 跳过空行
-            continue
-
         row_max = max(row_max, row_idx)
 
         for col_idx, ch in enumerate(stripped):

@@ -152,7 +152,11 @@ class AppController:
 
     def _win_keydown(self, key: int) -> None:
         if key in (pygame.K_RETURN, pygame.K_SPACE):
-            self._advance_from_win()
+            if self.state == AppState.COMPLETE:
+                # ← 全部通关后 Enter/Space 返回主菜单（不再停留在 COMPLETE）
+                self._back_to_menu()
+            else:
+                self._advance_from_win()
         elif key == pygame.K_ESCAPE:
             # WIN/COMPLETE 状态下按 ESC 直接返回主菜单
             self._back_to_menu()
