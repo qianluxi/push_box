@@ -189,7 +189,7 @@ class WinOverlay:
 
         overlay = pygame.Surface((self.screen_width, self.screen_height), pygame.SRCALPHA)
         overlay.set_alpha(min(150, alpha))
-        overlay.fill((0, 0, 0, min(150, alpha)))
+        overlay.fill((0, 0, 0))
         screen.blit(overlay, (0, 0))
 
         text_lines = self.show_text.split(chr(10))
