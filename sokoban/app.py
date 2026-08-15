@@ -276,7 +276,7 @@ class AppController:
         overlay.fill((0, 0, 0, 120))
         screen.blit(overlay, (0, 0))
 
-        text = pygame.font.SysFont("arial", 48, bold=True).render(
+        text = pygame.font.Font(None, 48).render(
             "已暂停", True, (200, 200, 200))
         screen.blit(text, text.get_rect(center=(self.screen_width // 2,
                                                 self.screen_height // 2)))
@@ -294,9 +294,9 @@ class AppController:
             self.hud.draw(screen)
 
         # 通关提示
-        text = pygame.font.SysFont("arial", 48, bold=True).render(
+        text = pygame.font.Font(None, 48).render(
             "ALL LEVELS COMPLETE!", True, (255, 220, 100))
-        back = pygame.font.SysFont("arial", 24).render(
+        back = pygame.font.Font(None, 24).render(
             "Press Enter to return to menu", True, (200, 200, 200))
         screen.blit(text, text.get_rect(center=(self.screen_width // 2,
                                                 self.screen_height // 2 - 20)))
