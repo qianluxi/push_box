@@ -174,8 +174,7 @@ class WinOverlay:
 
     def show(self, moves: int, pushes: int) -> None:
         """显示胜利信息。"""
-        self.show_text = f"LEVEL COMPLETE!
-Moves: {moves}  Pushes: {pushes}"
+        self.show_text = f"LEVEL COMPLETE!\nMoves: {moves}  Pushes: {pushes}"
         self.timer = 0
 
     def draw(self, screen) -> None:
