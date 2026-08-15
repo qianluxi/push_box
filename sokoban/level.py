@@ -20,6 +20,7 @@ V1.1 改进：
 
 from __future__ import annotations
 
+import os
 import re
 from pathlib import Path
 
@@ -163,6 +164,17 @@ def load_level(level_name: str) -> tuple[Board, GameState]:
             f"Level {path} validation failed ({len(errors)} error(s)):" +
             "".join(f"\n  - {e}" for e in errors)
         )
+
+    # ← Solver 可解性验证（SOKOBAN_VERIFY_LEVELS=1 时启用）
+    if os.environ.get("SOKOBAN_VERIFY_LEVELS", "0") == "1":
+        from .solver import solve, SolveStatus
+        result = solve(board, state)
+        if not result.solved:
+            details = "; ".join(result.deadlock_details) if result.deadlock_details else "no solution found"
+            raise ValueError(
+                f"Level {path} is unsolvable (Solver rejected): {details}. "
+                f"Explored {result.explored_states} states."
+            )
 
     return board, state
 
