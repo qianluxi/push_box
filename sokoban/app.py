@@ -153,6 +153,9 @@ class AppController:
     def _win_keydown(self, key: int) -> None:
         if key in (pygame.K_RETURN, pygame.K_SPACE):
             self._advance_from_win()
+        elif key == pygame.K_ESCAPE:
+            # WIN/COMPLETE 状态下按 ESC 直接返回主菜单
+            self._back_to_menu()
 
     def _mouse_click(self, pos: tuple[int, int]) -> None:
         if self.state == AppState.MENU:
@@ -198,6 +201,7 @@ class AppController:
         """从胜利界面进入下一关或完成。"""
         if self.game.next_level():
             self.win_overlay.timer = -1  # 重置计时器
+            self.state = AppState.PLAYING  # ← 必须切换回 PLAYING，否则卡死在 WIN 渲染模式
         else:
             self.state = AppState.COMPLETE
 
