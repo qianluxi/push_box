@@ -87,10 +87,15 @@ class Game:
         Args:
             action: 来自键盘/鼠标/AI的动作枚举
         """
+        # 胜利后仍然允许关卡切换和重置，禁止移动和撤销
         if self.won:
-            # 胜利后只响应 Reset
-            if action == Action.RESET:
-                self.reset()
+            match action:
+                case Action.RESET:
+                    self.reset()
+                case Action.NEXT_LEVEL:
+                    self.next_level()
+                case Action.PREV_LEVEL:
+                    self.prev_level()
             return
 
         if action in (Action.UP, Action.DOWN, Action.LEFT, Action.RIGHT):
@@ -100,9 +105,9 @@ class Game:
         elif action == Action.RESET:
             self.reset()
         elif action == Action.NEXT_LEVEL:
-            self._next_level()
+            self.next_level()
         elif action == Action.PREV_LEVEL:
-            self._prev_level()
+            self.prev_level()
 
     # ---- 移动逻辑 ----
 

@@ -56,6 +56,7 @@ def load_level(level_name: str) -> tuple[Board, GameState]:
     walls: set[tuple[int, int]] = set()
     goals: set[tuple[int, int]] = set()
     player_pos: Position | None = None
+    player_count: int = 0
     box_positions: set[Position] = set()
     row_max = -1
     col_max = -1
@@ -77,11 +78,25 @@ def load_level(level_name: str) -> tuple[Board, GameState]:
             elif ch == '$':
                 box_positions.add(Position(row_idx, col_idx))
             elif ch == '@':
+                player_count += 1
+                if player_count > 1:
+                    raise ValueError(
+                        f"Multiple player positions found at "
+                        f"row={row_idx}, col={col_idx}. "
+                        f"A valid level must have exactly one player (@)."
+                    )
                 player_pos = Position(row_idx, col_idx)
             elif ch == '*':
                 box_positions.add(Position(row_idx, col_idx))
                 goals.add((row_idx, col_idx))
             elif ch == '+':
+                player_count += 1
+                if player_count > 1:
+                    raise ValueError(
+                        f"Multiple player positions found at "
+                        f"row={row_idx}, col={col_idx}. "
+                        f"A valid level must have exactly one player (+ on goal)."
+                    )
                 player_pos = Position(row_idx, col_idx)
                 goals.add((row_idx, col_idx))
             elif ch == ' ':
@@ -106,6 +121,14 @@ def load_level(level_name: str) -> tuple[Board, GameState]:
         moves=0,
         pushes=0,
     )
+
+    # ← 调用校验器，防止非法关卡进入游戏
+    errors = validate_level(board, state)
+    if errors:
+        raise ValueError(
+            f"Level {path} validation failed ({len(errors)} error(s)):" +
+            "".join(f"\n  - {e}" for e in errors)
+        )
 
     return board, state
 
