@@ -20,7 +20,7 @@ def set_cell_shading(cell, hex_color):
     shading_elm.append(shading)
 
 
-def add_cell_text(cell, text, bold=False, size=12, font_name='SimSun', color=(0, 0, 0)):
+def add_cell_text(cell, text, bold=False, size=12, font_name='Microsoft YaHei', color=(0, 0, 0)):
     """Add text to a table cell with formatting."""
     p = cell.paragraphs[0]
     run = p.add_run(text)
@@ -63,9 +63,10 @@ def add_heading_custom(doc, text, level=1):
         p = doc.add_heading(text, level=2)
     for run in p.runs:
         run.font.color.rgb = PRIMARY_COLOR
-        run.font.name = 'SimHei'
+        run.font.name = 'Microsoft YaHei'
+        run.bold = True
         r_e = run._element
-        r_e.set(qn('w:eastAsiaFont'), 'SimHei')
+        r_e.set(qn('w:eastAsiaFont'), 'Microsoft YaHei')
     return p
 
 
@@ -76,9 +77,9 @@ def add_body(doc, text):
     p.paragraph_format.first_line_indent = Cm(0.71)  # 2 Chinese chars
     run = p.add_run(text)
     run.font.size = Pt(11)
-    run.font.name = 'SimSun'
+    run.font.name = 'Microsoft YaHei'
     r_e = run._element
-    r_e.set(qn('w:eastAsiaFont'), 'SimSun')
+    r_e.set(qn('w:eastAsiaFont'), 'Microsoft YaHei')
     return p
 
 
@@ -101,16 +102,16 @@ def add_note_box(doc, label, content):
     run_label = cell.paragraphs[0].add_run(label + " ")
     run_label.bold = True
     run_label.font.size = Pt(10)
-    run_label.font.name = 'SimHei'
+    run_label.font.name = 'Microsoft YaHei'
     run_label.font.color.rgb = ACCENT_COLOR
     r_e = run_label._element
-    r_e.set(qn('w:eastAsiaFont'), 'SimHei')
+    r_e.set(qn('w:eastAsiaFont'), 'Microsoft YaHei')
     run_content = cell.paragraphs[0].add_run(content)
     run_content.font.size = Pt(10)
-    run_content.font.name = 'SimSun'
+    run_content.font.name = 'Microsoft YaHei'
     run_content.font.color.rgb = BODY_COLOR
     r_e2 = run_content._element
-    r_e2.set(qn('w:eastAsiaFont'), 'SimSun')
+    r_e2.set(qn('w:eastAsiaFont'), 'Microsoft YaHei')
 
 
 def add_key_combo(doc, keys_str):
@@ -138,9 +139,9 @@ p.paragraph_format.space_before = Pt(60)  # Approximate top spacing
 p_run = p.add_run("推箱子游戏手册")
 p_run.font.size = Pt(28)
 p_run.bold = True
-p_run.font.name = 'SimHei'
+p_run.font.name = 'Microsoft YaHei'
 p_run.font.color.rgb = PRIMARY_COLOR
-p_run._element.set(qn('w:eastAsiaFont'), 'SimHei')
+p_run._element.set(qn('w:eastAsiaFont'), 'Microsoft YaHei')
 p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
 p2 = doc.add_paragraph()
@@ -213,7 +214,7 @@ p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 run_t = p.add_run("推箱子游戏手册")
 run_t.font.size = Pt(22)
 run_t.bold = True
-run_t.font.name = 'SimHei'
+run_t.font.name = 'Microsoft YaHei'
 run_t.font.color.rgb = PRIMARY_COLOR
 
 p2 = doc.add_paragraph()
@@ -286,10 +287,10 @@ for i, text in enumerate(["按键", "功能", "说明"]):
     run = cell.paragraphs[0].add_run(text)
     run.bold = True
     run.font.size = Pt(10)
-    run.font.name = 'SimHei'
+    run.font.name = 'Microsoft YaHei'
     run.font.color.rgb = PRIMARY_COLOR
     r_e = run._element
-    r_e.set(qn('w:eastAsiaFont'), 'SimHei')
+    r_e.set(qn('w:eastAsiaFont'), 'Microsoft YaHei')
 
 # Data rows
 row_data = [
@@ -308,10 +309,10 @@ for row_idx, keys in enumerate(keys_row_data, start=1):
             para.clear()
         run = cell.paragraphs[0].add_run(val)
         run.font.size = Pt(10)
-        run.font.name = 'SimSun'
+        run.font.name = 'Microsoft YaHei'
         run.font.color.rgb = BODY_COLOR
         r_e = run._element
-        r_e.set(qn('w:eastAsiaFont'), 'SimSun')
+        r_e.set(qn('w:eastAsiaFont'), 'Microsoft YaHei')
 
 add_heading_custom(doc, "二  功能按键", 2)
 
@@ -326,10 +327,10 @@ for i, text in enumerate(["按键", "功能"]):
     run = cell.paragraphs[0].add_run(text)
     run.bold = True
     run.font.size = Pt(10)
-    run.font.name = 'SimHei'
+    run.font.name = 'Microsoft YaHei'
     run.font.color.rgb = PRIMARY_COLOR
     r_e = run._element
-    r_e.set(qn('w:eastAsiaFont'), 'SimHei')
+    r_e.set(qn('w:eastAsiaFont'), 'Microsoft YaHei')
 
 func_data = [
     ("Z, Ctrl+Z", "撤回一步"),
@@ -356,10 +357,10 @@ for row_idx, (key, func) in enumerate(func_data, start=1):
         para.clear()
     run_f = cell_f.paragraphs[0].add_run(func)
     run_f.font.size = Pt(10)
-    run_f.font.name = 'SimSun'
+    run_f.font.name = 'Microsoft YaHei'
     run_f.font.color.rgb = BODY_COLOR
     r_f = run_f._element
-    r_f.set(qn('w:eastAsiaFont'), 'SimSun')
+    r_f.set(qn('w:eastAsiaFont'), 'Microsoft YaHei')
 
 add_heading_custom(doc, "三  暂停菜单", 2)
 add_body(doc, "按 ESC 进入暂停状态，在此状态下可以使用以下操作：")
@@ -406,10 +407,10 @@ for i, text in enumerate(["符号", "含义", "说明"]):
     run = cell.paragraphs[0].add_run(text)
     run.bold = True
     run.font.size = Pt(10)
-    run.font.name = 'SimHei'
+    run.font.name = 'Microsoft YaHei'
     run.font.color.rgb = PRIMARY_COLOR
     r_e = run._element
-    r_e.set(qn('w:eastAsiaFont'), 'SimHei')
+    r_e.set(qn('w:eastAsiaFont'), 'Microsoft YaHei')
 
 # Accent colors for special symbols
 for row_idx in range(1, 8):
@@ -427,10 +428,10 @@ for row_idx in range(1, 8):
         elif col_idx == 0:
             run.bold = True
         run.font.size = Pt(10)
-        run.font.name = 'SimSun'
+        run.font.name = 'Microsoft YaHei'
         run.font.color.rgb = BODY_COLOR
         r_e = run._element
-        r_e.set(qn('w:eastAsiaFont'), 'SimSun')
+        r_e.set(qn('w:eastAsiaFont'), 'Microsoft YaHei')
 
 add_heading_custom(doc, "三  移动规则", 2)
 add_body(doc, "一  玩家可以自由走到任意无墙的地板方向；")
@@ -469,10 +470,10 @@ for i, text in enumerate(["关卡", "名称", "难度", "特点"]):
     run = cell.paragraphs[0].add_run(text)
     run.bold = True
     run.font.size = Pt(10)
-    run.font.name = 'SimHei'
+    run.font.name = 'Microsoft YaHei'
     run.font.color.rgb = PRIMARY_COLOR
     r_e = run._element
-    r_e.set(qn('w:eastAsiaFont'), 'SimHei')
+    r_e.set(qn('w:eastAsiaFont'), 'Microsoft YaHei')
 
 levels = [
     ("Level 1", "初识推箱子", "\u2605\u2606\u2606\u2606\u2606", "单个箱子，位置明显"),
@@ -491,13 +492,13 @@ for row_idx, (level, name, diff, feat) in enumerate(levels, start=1):
             para.clear()
         run = cell.paragraphs[0].add_run(val)
         run.font.size = Pt(10)
-        run.font.name = 'SimSun'
+        run.font.name = 'Microsoft YaHei'
         if col_idx == 2:
             run.font.color.rgb = ACCENT_COLOR
         else:
             run.font.color.rgb = BODY_COLOR
         r_e = run._element
-        r_e.set(qn('w:eastAsiaFont'), 'SimSun')
+        r_e.set(qn('w:eastAsiaFont'), 'Microsoft YaHei')
 
 add_heading_custom(doc, "创建自定义关卡", 2)
 add_body(doc, "你可以在 levels/ 目录下创建自己的关卡文件（txt格式），并按照命名规则将其加入游戏：")
@@ -512,7 +513,7 @@ for para in cell.paragraphs:
 code_lines = "# 关卡文件格式示例:", "########", "#      #", "#  .   #", "#  $   #", "#  @   #", "########"
 run_code = cell.paragraphs[0].add_run("\n".join(code_lines))
 run_code.font.size = Pt(10)
-run_code.font.name = 'Consolas'
+run_code.font.name = 'Courier New'
 run_code.font.color.rgb = BODY_COLOR
 
 add_body(doc, "在文件中上述字符构建你的关卡布局。文件名建议使用 level_XX.txt 格式，其中 XX 为数字（如 level_08.txt），用于确定关卡顺序。")
